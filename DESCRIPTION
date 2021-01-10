@@ -1,0 +1,30 @@
+Package: pfrefscrape
+Title: Scrape Pro Football Reference Free Stats
+Version: 0.0.5
+Authors@R: 
+    person(given = "Santiago",
+           family = "Casanova",
+           role = c("aut", "cre"),
+           email = "santiago.casanova@yahoo.com")
+Description: pfrefscrape pulls scrimmage and passing stats from Pro Football 
+  Reference and stores them in a data table. All functions take an
+  argument for the desired seasons and the format yearA:yearB is recommended.
+  ProBowl and AllPro variables within passing data will only apply to QBs, 
+  skill players that recorded passing stats and made honours as a different 
+  position won't show True for said variables. Player data has periods ('.'), 
+  Jr., Sr. etc. removed for easy manipulation. 
+  Scrimmage data includes nflfastR's positional and team name data as 
+  alternative to pfref values.
+License: `use_gpl3_license()`
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports:
+        data.table (>= 1.13.0),
+        tidyverse (>= 1.3.0),
+        dplyr,
+        nflfastR (>= 3.0.0),
+        rvest (>= 0.3.6),
+        magrittr
+  
