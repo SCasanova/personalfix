@@ -89,7 +89,7 @@ pull_pass <- function(seasons=2020){
     y <- y %>% as.data.table()
     colnames(y) <- c('Rk', 'Player','Team', 'Age', 'Pos',  'G', 'GS',
                      'QBrec', 'Cmp', 'Att','Cmp_pct', 'Yds', 'TD', 'TD_pct', 'Int','Int_pct',
-                     'FirstD',' Lng','YpA',  'AYpA','YpC', 'YpG', 'Passer_rate',  'QBR',   'Sk',  'Sk_yds', 'NYpA', 'ANYpA', 'Sk_pct', '4QC', 'GWD')
+                     'FirstD','Lng','YpA',  'AYpA','YpC', 'YpG', 'Passer_rate',  'QBR',   'Sk',  'Sk_yds', 'NYpA', 'ANYpA', 'Sk_pct', '4QC', 'GWD')
 
     y[, Season := x]
     y[,ProBowl := ifelse(Att >=50, ifelse(grepl("*", y$Player, fixed = T), 1, 0), 0)]
