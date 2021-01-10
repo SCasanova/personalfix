@@ -33,14 +33,9 @@ pull_scm <- function(seasons=2020){
 
 
   #Clean Player names
-  data_name$Player <- gsub("*", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub(".", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("+", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("Jr", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("Sr", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("II", "", data_name$Player, fixed = T)
+  remove_vec <- c("*", "+", ".", "Jr", "Sr", "III", "II")
+  data_name$Player <- clean_name(remove_vec, data_name$Player)
   data_name$Ctch_pct <- gsub("%", "", data_name$Ctch_pct, fixed = T)
-  data_name$Player <- trimws(data_name$Player)
   data_name <- data_name %>% dplyr::mutate_at(c(6:34), as.numeric)
   data_name$Ctch_pct <- data_name$Ctch_pct/100
   data_name[is.na(data_name)] <- 0
@@ -48,18 +43,17 @@ pull_scm <- function(seasons=2020){
   roster <- nflfastR::fast_scraper_roster(seasons)  #nflfastR roster data to merge positions, heigh, weight, etc
 
   pos_data <- roster %>%
-    dplyr::select(position, full_name, team, season) %>%
+    dplyr::select(position, full_name, team, season, height, weight) %>%
     dplyr::filter(position %in% c('QB', 'WR', 'RB', 'FB', 'TE')) %>%
-    dplyr::rename(short_team = team)
+    dplyr::rename(short_team = team) %>% dplyr::mutate_at(6, as.numeric)
 
   pos_data$full_name <- gsub(".", "", pos_data$full_name, fixed = T)
 
   full_data <- unique(merge(data_name, pos_data, by.x = c('Player', 'Season'), by.y = c('full_name', 'season'), all.x = T, allow.cartesian = T)) %>%
-    as.data.table()
+    data.table::as.data.table()
   full_data <- full_data %>% dplyr::filter(!(is.na(position))) %>%
     dplyr::select(-Rk, -Pos)
   full_data[, Opps := Tgt+Att]
-  full_data[, Fpts := (Rec*0.5)+ (YScm*0.1)+ (RRTD*6)]
   full_data[, PPR_Fpts := (Rec*1)+ (YScm*0.1)+ (RRTD*6)]
   full_data[, FirstD_Rec_pct := ifelse(Tgt == 0, 0, round(FirstD_Rec/Tgt, 3))]
   full_data[, FirstD_Rush_pct := ifelse(Att == 0, 0, round(FirstD_Rush/Att, 3))]
@@ -97,15 +91,28 @@ pull_pass <- function(seasons=2020){
     data_name <- rbind(data_name, y)
   }
 
-  data_name$Player <- gsub("*", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub(".", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("+", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("Jr", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("Sr", "", data_name$Player, fixed = T)
-  data_name$Player <- gsub("II", "", data_name$Player, fixed = T)
-  data_name$Player <- trimws(data_name$Player)
+  remove_vec <- c("*", "+", ".", "Jr", "Sr", "III", "II")
+  data_name$Player <- clean_name(remove_vec, data_name$Player)
   data_name <- data_name %>% dplyr::mutate_at(c(9:34), as.numeric)
 }
 
+#' Clean name data
+#'
+#' This function takes a character vector to remove and a vector to be cleaned.
+#' Outputs the second vector without the characters in first vector and applies
+#' trimws function
+#'
+#'
+#'
+#' @param to_remove Vector with characters to search and remove in data_clean
+#' @param data_clean Vector suceptible to cleaning
+#' @return Second vector without characters from first vector and without ws
+#'
 
-
+clean_name <- function(to_remove, data_clean){
+  for (i in 1:length(to_remove)){
+    data_clean <- gsub(paste0(to_remove[i]), "", data_clean, fixed = T)
+    data_clean <- trimws(data_clean)
+  }
+  return(data_clean)
+}
