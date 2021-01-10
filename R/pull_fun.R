@@ -23,7 +23,7 @@ pull_scm <- function(seasons=2020){
     y <- y[-delete,]
     y <- data.table::data.table(y)
     colnames(y) <- c('Rk', 'Player','Team', 'Age', 'Pos',  'G', 'GS',
-                     'Tgt', 'Rec', 'Yds','YpR', 'TD_Rec', 'FirstD_Rec', 'Lng', 'RpG','YpG_Rec',  'Ctch_pct',' YpTgt',
+                     'Tgt', 'Rec', 'Yds','YpR', 'TD_Rec', 'FirstD_Rec', 'Lng', 'RpG','YpG_Rec',  'Ctch_pct','YpTgt',
                      'Att',  'Yds_Rush','TD_Rush', 'FirstD_Rush', 'Lng_Rush',  'YpA',   'YpG',  'ApG', 'Touch', 'YpTch', 'YScm', 'RRTD', 'Fmb')
     y[, Season := x]
     y[,ProBowl := ifelse(grepl("*", y$Player, fixed = T), 1, 0)] #dummy variable
