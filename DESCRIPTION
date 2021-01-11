@@ -14,7 +14,8 @@ Description: pfrefscrape pulls scrimmage and passing stats from Pro Football
   position won't show True for said variables. Player data has periods ('.'), 
   Jr., Sr. etc. removed for easy manipulation. 
   Scrimmage data includes nflfastR's positional and team name data as 
-  alternative to pfref values.
+  alternative to pfref values. Additionally, scrimmage data includes the 
+  following variables: opportunities, fantasy points and first down rate.
 License: `use_gpl3_license()`
 Encoding: UTF-8
 LazyData: true
