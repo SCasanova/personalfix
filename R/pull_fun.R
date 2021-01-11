@@ -93,7 +93,7 @@ pull_pass <- function(seasons=2020){
 
   remove_vec <- c("*", "+", ".", "Jr", "Sr", "III", "II")
   data_name$Player <- clean_name(remove_vec, data_name$Player)
-  data_name <- data_name %>% dplyr::mutate_at(c(9:34), as.numeric)
+  data_name <- data_name %>% dplyr::mutate_at(c(1,4,6,7,9:34), as.numeric)
 }
 
 #' Clean name data
