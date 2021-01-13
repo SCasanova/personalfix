@@ -204,8 +204,8 @@ pull_AdvPass <- function(seasons=2020){
     adv <- adv %>% select(-c(Yds,Yds.y))
     adv <- adv %>% rename(Yds = Yds.x)
     adv[, Season := x]
-    adv[,ProBowl := ifelse(Att >=50, ifelse(grepl("*", y$Player, fixed = T), 1, 0), 0)]
-    adv[,AllPro :=  ifelse(Att <= 50, ifelse(grepl("+", y$Player, fixed = T), 1, 0), 0)]
+    adv[,ProBowl := ifelse(Att >=50, ifelse(grepl("*", adv$Player, fixed = T), 1, 0), 0)]
+    adv[,AllPro :=  ifelse(Att <= 50, ifelse(grepl("+", adv$Player, fixed = T), 1, 0), 0)]
     data_name <- rbind(data_name, adv)
   }
 
@@ -225,12 +225,4 @@ pull_AdvPass <- function(seasons=2020){
   data_name[is.na(data_name)] <- 0
 
   return(data_name)
-}
-
-clean_name <- function(to_remove, data_clean){
-  for (i in 1:length(to_remove)){
-    data_clean <- gsub(paste0(to_remove[i]), "", data_clean, fixed = T)
-    data_clean <- trimws(data_clean)
-  }
-  return(data_clean)
 }
