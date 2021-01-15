@@ -1,6 +1,6 @@
 Package: pfrefscrape
 Title: Scrape Pro Football Reference Free Stats
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person(given = "Santiago",
            family = "Casanova",

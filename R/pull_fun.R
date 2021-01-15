@@ -200,13 +200,14 @@ pull_AdvPass <- function(seasons=2020){
       tab <- tab[-delete, c(2, 10:ncol(tab))]
       adv <- merge(adv, tab, by = 'Player')
     }
-    adv <- data.table::data.table(adv)
     adv <- adv %>% select(-c(Yds,Yds.y))
     adv <- adv %>% rename(Yds = Yds.x)
+    adv <- data.table::data.table(adv)
+
     adv[, Season := x]
     adv[,ProBowl := ifelse(Att >=50, ifelse(grepl("*", adv$Player, fixed = T), 1, 0), 0)]
     adv[,AllPro :=  ifelse(Att <= 50, ifelse(grepl("+", adv$Player, fixed = T), 1, 0), 0)]
-    data_name <- rbind(data_name, adv)
+    data_name <- rbind(data_name, adv, fill = T)
   }
 
   #Clean data
