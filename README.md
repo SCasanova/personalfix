@@ -11,6 +11,7 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("SCasanova/personalfix")
 ```
 
+
 ## Functions
 
 ### Football Outsiders Data
