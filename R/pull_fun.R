@@ -140,7 +140,6 @@ clean_name <- function(to_remove, data_clean){
 #' years
 #' @importFrom magrittr "%>%"
 #' @import data.table
-#' @export
 
 pull_teamAdvPass <- function(seasons=2020){
   data_name <- data.table::data.table()
