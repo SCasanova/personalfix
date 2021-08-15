@@ -10,7 +10,6 @@
 #' @return A data table including scrimmage stats from selected years
 #' @importFrom magrittr "%>%"
 #' @import data.table
-#' @export
 
 pull_scm <- function(seasons=2020){
   data_name <- data.table::data.table()
@@ -73,7 +72,6 @@ pull_scm <- function(seasons=2020){
 #' @return A data table including passsing stats from selected years
 #' @importFrom magrittr "%>%"
 #' @import data.table
-#' @export
 
 pull_pass <- function(seasons=2020){
   data_name <- data.table()
@@ -203,7 +201,6 @@ pull_teamAdvPass <- function(seasons=2020){
 #' selected years
 #' @importFrom magrittr "%>%"
 #' @import data.table
-#' @export
 
 pull_advPass <- function(seasons=2020){
   try(if(min(seasons) < 2019) stop('No advanced data available for seasons before 2019', call. = F))
