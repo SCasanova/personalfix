@@ -67,7 +67,8 @@ fix_num("twenty")
  `name_key()`
 This functions takes arguments name, draft_year, draft_round and position 
 (easily obtainable from clean_rosters) and outputs a merge-ready name for 
-situations where IDs are not available
+situations where IDs are not available. It also uses ffscrapr's mismatch names
+database to fix name variations.
 
 **Example:**
 ```{r}
