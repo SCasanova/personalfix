@@ -96,8 +96,5 @@ This function is a wrapper for `nflreadr::load_rosters()` and outputs all
 headshot urls with https: prefix and integrates FB, HB and RB into RB.
 Also includes draft data from `ffscrapr::dp_playerids()`
 
-```{r}
-clean_rosters() %>% dplyr::select(full_name, headshot_url, draft_year)
-```
 
 
