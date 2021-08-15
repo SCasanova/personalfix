@@ -66,7 +66,7 @@ fix_num("twenty")
 ### Merge-ready NFL Names
  `name_key()`
 This functions takes arguments name, draft_year, draft_round and position 
-(easily obtainable from clean_rosters) and outputs a merge-ready name for 
+(easily obtainable from `clean_rosters()`) and outputs a merge-ready name for 
 situations where IDs are not available. It also uses ffscrapr's mismatch names
 database to fix name variations.
 
@@ -79,8 +79,8 @@ name_key(c('Zeke Elliott', 'Josh Jacobs'), c(2017, 2019), c(1,1), c('RB','RB'))
 
 ### Modified Rosters
 `clean_rosters()`
-This function is a wrapper for nflreadr::load_rosters() and outputs all
+This function is a wrapper for` nflreadr::load_rosters()` and outputs all
 headshot urls with https: prefix and integrates FB, HB and RB into RB.
-Also includes draft data from ffscrapr::dp_playerids()
+Also includes draft data from `ffscrapr::dp_playerids()`
 
 
