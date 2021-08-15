@@ -12,41 +12,6 @@ remotes::install_github("SCasanova/personalfix")
 
 ## Functions
 
-
-### Modified Rosters
-`clean_rosters()`
-This function is a wrapper for nflreadr::load_rosters() and outputs all
-headshot urls with https: prefix and integrates FB, HB and RB into RB.
-Also includes draft data from ffscrapr::dp_playerids()
-
-
-### Merge-ready NFL Names
- `name_key()`
-This functions takes arguments name, draft_year, draft_round and position 
-(easily obtainable from clean_rosters) and outputs a merge-ready name for 
-situations where IDs are not available
-
-**Example:**
-```{r}
-name_key(c('Zeke Elliott', 'Josh Jacobs'), c(2017, 2019), c(1,1), c('RB','RB'))
-[1] "ezeelliott171RB" "josjacobs191RB" 
-```
-
-### Adjust Numeric Formats
-`fix_num()`
-This function will take a vector, detect its format (character, numeric or percentage) and will adjust to numeric when possible
-
-**Example:**
-```{r}
-fix_num("20%")
-[1] 0.2
-fix_num("20")
-[1] 20
-fix_num("twenty")
-[1] "twenty"
-```
-
-
 ### Football Outsiders Data
 `foutsiders_data()`
 This function accepts page name, season, username, password to scrape from 
@@ -84,4 +49,37 @@ foutsiders_data("team-offense", 2020, "username", "password")
 #   Unadj. Total VOA <dbl>, Unadj. Pass VOA <dbl>,
 #   Unadj. Rush VOA <dbl>, Variance <dbl>, Schedule <dbl>
 ```
+
+### Adjust Numeric Formats
+`fix_num()`
+This function will take a vector, detect its format (character, numeric or percentage) and will adjust to numeric when possible
+
+**Example:**
+```{r}
+fix_num("20%")
+[1] 0.2
+fix_num("20")
+[1] 20
+fix_num("twenty")
+[1] "twenty"
+```
+### Merge-ready NFL Names
+ `name_key()`
+This functions takes arguments name, draft_year, draft_round and position 
+(easily obtainable from clean_rosters) and outputs a merge-ready name for 
+situations where IDs are not available
+
+**Example:**
+```{r}
+name_key(c('Zeke Elliott', 'Josh Jacobs'), c(2017, 2019), c(1,1), c('RB','RB'))
+[1] "ezeelliott171RB" "josjacobs191RB" 
+```
+
+
+### Modified Rosters
+`clean_rosters()`
+This function is a wrapper for nflreadr::load_rosters() and outputs all
+headshot urls with https: prefix and integrates FB, HB and RB into RB.
+Also includes draft data from ffscrapr::dp_playerids()
+
 
