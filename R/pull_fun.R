@@ -18,13 +18,17 @@ pull_scm <- function(seasons=2020){
     y <- (xml2::read_html(url(paste0("https://www.pro-football-reference.com/years/",x,"/scrimmage.htm"))) %>% #read and interpret html table
             rvest::html_table(fill = T))[[1]]
     colnames(y) <- y[1,]
-    delete <- rownames(y[y$Rk == 'Rk',]) %>% #delete intermediate column-name rows
-      as.numeric()
-    y <- y[-delete,]
-    y <- data.table::data.table(y)
-    colnames(y) <- c('Rk', 'Player','Team', 'Age', 'Pos',  'G', 'GS',
-                     'Tgt', 'Rec', 'Yds','YpR', 'TD_Rec', 'FirstD_Rec', 'Lng', 'RpG','YpG_Rec',  'Ctch_pct','YpTgt',
-                     'Att',  'Yds_Rush','TD_Rush', 'FirstD_Rush', 'Lng_Rush',  'YpA',   'YpG',  'ApG', 'Touch', 'YpTch', 'YScm', 'RRTD', 'Fmb')
+    colnames(y)[10] <- 'Rec Yds'
+    colnames(y)[12] <- 'Rec TDs'
+    colnames(y)[13] <- '1D Rec'
+    colnames(y)[16] <- 'Rec Yds/G'
+    colnames(y)[20] <- 'Rush Yds'
+    colnames(y)[21] <- 'Rush TDs'
+    colnames(y)[22] <- '1D Rush'
+    colnames(y)[23] <- 'Lng Rush'
+    colnames(y)[25] <- 'Rush Yds/G'
+    y <- y[-(y[, 1]=='Rk'),] %>%
+      data.table()
     y[, Season := x]
     y[,ProBowl := ifelse(grepl("*", y$Player, fixed = T), 1, 0)] #dummy variable
     y[,AllPro := ifelse(grepl("+", y$Player, fixed = T), 1, 0)]
@@ -35,29 +39,27 @@ pull_scm <- function(seasons=2020){
   #Clean Player names
   remove_vec <- c("*", "+", ".", "Jr", "Sr", "III", "II")
   data_name$Player <- clean_name(remove_vec, data_name$Player)
-  data_name$Ctch_pct <- gsub("%", "", data_name$Ctch_pct, fixed = T)
+  data_name$`Ctch%` <- gsub("%", "", data_name$`Ctch%`, fixed = T)
   data_name <- data_name %>% dplyr::mutate_at(c(6:34), as.numeric)
   data_name$Ctch_pct <- data_name$Ctch_pct/100
   data_name[is.na(data_name)] <- 0
+  data_name <- data_name %>%
+    dplyr::mutate(Tm = dplyr::case_when(
+      Tm == 'GNB'~'GB',
+      Tm == 'SFO'~'SF',
+      Tm == 'KAN'~'KC',
+      Tm == 'NWE'~'NE',
+      Tm == 'TAM'~'TB',
+      Tm == 'NOR'~'NO',
+      Tm == 'LVR'~'LV',
+      Tm == 'SDG'~'SD',
+      Tm == 'LAR'~'LA',
+      TRUE ~ Tm
+    )) %>%
+    dplyr::filter(Tm != '2TM',
+           Tm != '3TM')
 
-  roster <- nflfastR::fast_scraper_roster(seasons)  #nflfastR roster data to merge positions, heigh, weight, etc
-
-  pos_data <- roster %>%
-    dplyr::select(position, full_name, team, season, height, weight) %>%
-    dplyr::filter(position %in% c('QB', 'WR', 'RB', 'FB', 'TE')) %>%
-    dplyr::rename(short_team = team) %>% dplyr::mutate_at(6, as.numeric)
-
-  pos_data$full_name <- gsub(".", "", pos_data$full_name, fixed = T)
-
-  full_data <- unique(merge(data_name, pos_data, by.x = c('Player', 'Season'), by.y = c('full_name', 'season'), all.x = T, allow.cartesian = T)) %>%
-    data.table::as.data.table()
-  full_data <- full_data %>% dplyr::filter(!(is.na(position))) %>%
-    dplyr::select(-Rk, -Pos)
-  full_data[, Opps := Tgt+Att]
-  full_data[, PPR_Fpts := (Rec*1)+ (YScm*0.1)+ (RRTD*6)]
-  full_data[, FirstD_Rec_pct := ifelse(Tgt == 0, 0, round(FirstD_Rec/Tgt, 3))]
-  full_data[, FirstD_Rush_pct := ifelse(Att == 0, 0, round(FirstD_Rush/Att, 3))]
-  return(full_data)
+  return(data_name)
 }
 
 #' Pull NFL Passing Stats
@@ -94,6 +96,15 @@ pull_pass <- function(seasons=2020){
   remove_vec <- c("*", "+", ".", "Jr", "Sr", "III", "II")
   data_name$Player <- clean_name(remove_vec, data_name$Player)
   data_name <- data_name %>% dplyr::mutate_at(c(1,4,6,7,9:34), as.numeric)
+  data_name <- data_name %>% dplyr::mutate(Tm = dplyr::case_when(Tm == 'LAR'~'LA',
+                                                          Tm == 'TAM'~'TB',
+                                                          Tm == 'NWE'~'NE',
+                                                          Tm == 'GNB'~'GB',
+                                                          Tm == 'KAN'~'KC',
+                                                          Tm == 'SFO'~'SF',
+                                                          Tm == 'NOR'~'NO',
+                                                          Tm == 'LVR'~'LV',
+                                                          TRUE ~ Tm))
 }
 
 #' Clean name data
@@ -114,7 +125,9 @@ clean_name <- function(to_remove, data_clean){
     data_clean <- gsub(paste0(to_remove[i]), "", data_clean, fixed = T)
     data_clean <- trimws(data_clean)
   }
+
   return(data_clean)
+
 }
 
 #' Pull NFL Advanced Team Passing Stats
@@ -165,6 +178,16 @@ pull_teamAdvPass <- function(seasons=2020){
   data_name$`Prss%` <- data_name$`Prss%`/100
   data_name[is.na(data_name)] <- 0
 
+  data_name <- data_name %>% dplyr::mutate(Tm = dplyr::case_when(Tm == 'LAR'~'LA',
+                                                          Tm == 'TAM'~'TB',
+                                                          Tm == 'NWE'~'NE',
+                                                          Tm == 'GNB'~'GB',
+                                                          Tm == 'KAN'~'KC',
+                                                          Tm == 'SFO'~'SF',
+                                                          Tm == 'NOR'~'NO',
+                                                          Tm == 'LVR'~'LV',
+                                                          TRUE ~ Tm))
+
   return(data_name)
 }
 
@@ -182,32 +205,30 @@ pull_teamAdvPass <- function(seasons=2020){
 #' @import data.table
 #' @export
 
-pull_AdvPass <- function(seasons=2020){
-  try(if(min(seasons) < 2018) stop('No advanced data available for seasons before 2018', call. = F))
+pull_advPass <- function(seasons=2020){
+  try(if(min(seasons) < 2019) stop('No advanced data available for seasons before 2019', call. = F))
   data_name <- data.table::data.table()
   for (x in seasons){
-    adv <- (xml2::read_html(url(paste0("https://www.pro-football-reference.com/years/",x,"/passing_advanced.htm"))) %>% #read and interpret html table
-              rvest::html_table(fill = T))[[1]]
+    adv <- (xml2::read_html(url(paste0('https://www.pro-football-reference.com/years/',x,'/passing_advanced.htm#all_ks_passing_detailed_air_yards'))) %>% #read and interpret html table
+              rvest::html_table())[[1]]
     colnames(adv) <- adv[1,]
-    delete <- rownames(adv[adv$Tm == 'Tm',]) %>% as.numeric()
-    adv <- adv[-(delete), ]
+    adv <- adv[-(adv[, 1]=='Rk'),] %>%
+      data.table()
     for (i in 2:3){
       tab <- (xml2::read_html(url(paste0("https://www.pro-football-reference.com/years/",x,"/passing_advanced.htm"))) %>% #read and interpret html table
                 rvest::html_table(fill = T))[[i]]
       colnames(tab) <- tab[1,]
-      delete <- rownames(tab[tab$Tm == 'Tm',]) %>% #delete intermediate column-name rows
-        as.numeric()
-      tab <- tab[-delete, c(2, 10:ncol(tab))]
-      adv <- merge(adv, tab, by = 'Player')
+      tab <- tab[-(tab[, 1]=='Rk'),]
+      tab <- tab[, c(2, 3,11:ncol(tab))]
+      adv <- dplyr::inner_join(adv, tab, by = c('Player', 'Tm')) %>%
+        data.table::data.table()
     }
-    adv <- adv %>% select(-c(Yds,Yds.y))
-    adv <- adv %>% rename(Yds = Yds.x)
     adv <- data.table::data.table(adv)
 
     adv[, Season := x]
     adv[,ProBowl := ifelse(Att >=50, ifelse(grepl("*", adv$Player, fixed = T), 1, 0), 0)]
     adv[,AllPro :=  ifelse(Att <= 50, ifelse(grepl("+", adv$Player, fixed = T), 1, 0), 0)]
-    data_name <- rbind(data_name, adv, fill = T)
+    data_name <- rbind(data_name, adv)
   }
 
   #Clean data
@@ -225,5 +246,16 @@ pull_AdvPass <- function(seasons=2020){
   data_name$`Prss%` <- data_name$`Prss%`/100
   data_name[is.na(data_name)] <- 0
 
+  data_name <- data_name %>% dplyr::mutate(Tm = dplyr::case_when(Tm == 'LAR'~'LA',
+                                                          Tm == 'TAM'~'TB',
+                                                          Tm == 'NWE'~'NE',
+                                                          Tm == 'GNB'~'GB',
+                                                          Tm == 'KAN'~'KC',
+                                                          Tm == 'SFO'~'SF',
+                                                          Tm == 'NOR'~'NO',
+                                                          Tm == 'LVR'~'LV',
+                                                          TRUE ~ Tm))
+
   return(data_name)
 }
+
