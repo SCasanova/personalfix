@@ -14,7 +14,7 @@ remotes::install_github("SCasanova/personalfix")
 
 ### Football Outsiders Data
 `foutsiders_data()`
-This function accepts page name, season, username, password to scrape from 
+This function accepts page name, season, username and password to scrape from 
 Football Outsiders. 
 Current supported pages are:
 
