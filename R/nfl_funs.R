@@ -46,9 +46,9 @@ clean_roster <- function(seasons = 2020) {
 name_key <- function(name, draft_year, draft_round, position){
   key <- ffscrapr::dp_clean_names(name, lowercase = T)
   paste0(
-    sapply(key, function(x){substr(strsplit(x, ' ')[[1]][1], 1,3)}),
-    sapply(key, function(x){strsplit(x, ' ')[[1]][2]}),
-    substr(draft_year, 3, 4),
+    purrr::map_chr(key, function(x){stringr::str_sub(stringr::str_split(x, ' ')[[1]][1], 1,3)}),
+    purrr::map_chr(key, function(x){stringr::str_split(x, ' ')[[1]][2]}),
+    stringr::str_sub(draft_year, 3, 4),
     draft_round,
     position
   )
@@ -87,7 +87,7 @@ foutsiders_data <- function(page = 'team-offense', season = 2020, user='', pass=
     rvest::session_jump_to(pgsession,
                     login)
   table <- (page_read %>% rvest::html_table(fill = T))[[1]]
-
+  if( is.na(table[6,2]) | table[6,2] == '' ) {warning('Login failed, check your credentials. Data may be incomplate')}
   if(stringr::str_detect(page, 'line')){
     colnames(table) <- table[1,]
     table <- table[-1,]
@@ -121,7 +121,7 @@ foutsiders_data <- function(page = 'team-offense', season = 2020, user='', pass=
 fix_num <- function(nums) {
   if (stringr::str_detect(nums[1], "%")) {
     nums <- nums %>%
-      gsub("%", "", ., fixed = T) %>%
+      stringr::str_remove(.,"%",) %>%
       as.numeric()
 
     nums / 100
