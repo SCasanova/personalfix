@@ -1,4 +1,10 @@
+```{r setup, include=FALSE}
+# Add warning=F, message=F
+knitr::opts_chunk$set(echo = T, warning=FALSE, message=FALSE)
+```
+
 # personalfix
+
 
 A set of functions to easily access Football Outsiders data, merge-ready
 NFL names and a wrapper for nflreadr::load_rosters()
