@@ -54,7 +54,7 @@ foutsiders_data("team-offense", 2020, "username", "password")
 `fix_num()`
 This function will take a vector, detect its format (character, numeric or percentage) and will adjust to numeric when possible
 
-**Example:**
+**Examples:**
 ```{r}
 fix_num("20%")
 [1] 0.2
@@ -62,18 +62,22 @@ fix_num("20")
 [1] 20
 fix_num("twenty")
 [1] "twenty"
+
+df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 ```
 ### Merge-ready NFL Names
  `name_key()`
 This functions takes arguments name, draft_year, draft_round and position 
 (easily obtainable from `clean_rosters()`) and outputs a merge-ready name for 
-situations where IDs are not available. It also uses ffscrapr's mismatch names
+situations where IDs are not available. It also uses ffscrapr's mismatched names
 database to fix name variations.
 
-**Example:**
+**Examples:**
 ```{r}
 name_key(c('Zeke Elliott', 'Josh Jacobs'), c(2017, 2019), c(1,1), c('RB','RB'))
 [1] "ezeelliott171RB" "josjacobs191RB" 
+
+df %>% dplyr::mutate(merge_name = name_key(name, draft_year, draft_round, position))
 ```
 
 
