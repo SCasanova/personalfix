@@ -67,6 +67,9 @@ fix_num("20")
 fix_num("twenty")
 [1] "twenty"
 
+fix_num("2,543")
+[1] 2543
+
 df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 ```
 ### Merge-ready NFL Names
