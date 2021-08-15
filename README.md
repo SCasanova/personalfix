@@ -33,7 +33,7 @@ name_key(c('Zeke Elliott', 'Josh Jacobs'), c(2017, 2019), c(1,1), c('RB','RB'))
 ```
 
 ### Adjust Numeric Formats
-* `fix_num()`
+`fix_num()`
 This function will take a vector, detect its format (character, numeric or percentage) and will adjust to numeric when possible
 
 **Example:**
