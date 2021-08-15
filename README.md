@@ -1,3 +1,8 @@
+```{r setup, include=FALSE}
+# Add warning=F, message=F
+knitr::opts_chunk$set(echo = T, warning=FALSE, message=FALSE)
+```
+
 # personalfix
 
 
