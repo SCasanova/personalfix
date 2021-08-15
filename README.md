@@ -58,8 +58,10 @@ This function will take a vector, detect its format (character, numeric or perce
 ```{r}
 fix_num("20%")
 [1] 0.2
+
 fix_num("20")
 [1] 20
+
 fix_num("twenty")
 [1] "twenty"
 
@@ -70,7 +72,9 @@ df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 This functions takes arguments name, draft_year, draft_round and position 
 (easily obtainable from `clean_rosters()`) and outputs a merge-ready name for 
 situations where IDs are not available. It also uses ffscrapr's mismatched names
-database to fix name variations.
+database to fix name variations. 
+
+Alternatively other variables could be used in place of draft_round and position
 
 **Examples:**
 ```{r}
@@ -86,5 +90,9 @@ df %>% dplyr::mutate(merge_name = name_key(name, draft_year, draft_round, positi
 This function is a wrapper for` nflreadr::load_rosters()` and outputs all
 headshot urls with https: prefix and integrates FB, HB and RB into RB.
 Also includes draft data from `ffscrapr::dp_playerids()`
+
+```{r}
+clean_rosters() %>% dplyr::select(full_name, headshot_url, draft_year)
+```
 
 

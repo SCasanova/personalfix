@@ -9,8 +9,6 @@
 #' @param seasons Range of years to pull from nflreadr rosters. Defaults to 2020
 #' @return Clean/prepared roster data
 #' @importFrom magrittr "%>%"
-#' @import nflreadr
-#' @import ffscrapr
 #' @export
 
 
@@ -43,7 +41,6 @@ clean_roster <- function(seasons = 2020) {
 #' @param position position in uppercase format (eg. RB, WR)
 #' @return simplified name (using on ffscrapr mismatches, draft year, round and position)
 #' @importFrom magrittr "%>%"
-#' @import ffscrapr
 #' @export
 
 name_key <- function(name, draft_year, draft_round, position){
@@ -72,7 +69,6 @@ name_key <- function(name, draft_year, draft_round, position){
 #' @param pass Football Outsiders authorized password
 #' @return table with requested data
 #' @importFrom magrittr "%>%"
-#' @import rvest
 #' @export
 
 foutsiders_data <- function(page = 'team-offense', season = 2020, user='', pass='') {
