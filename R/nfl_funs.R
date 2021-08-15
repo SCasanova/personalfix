@@ -121,13 +121,17 @@ foutsiders_data <- function(page = 'team-offense', season = 2020, user='', pass=
 fix_num <- function(nums) {
   if (stringr::str_detect(nums[1], "%")) {
     nums <- nums %>%
-      stringr::str_remove(.,"%",) %>%
+      stringr::str_remove(., "%" ) %>%
       as.numeric()
 
     nums / 100
   } else if (!is.na(as.numeric(nums[1])) &
              is.numeric(as.numeric(nums[1]))) {
     nums %>% as.numeric()
+  } else if (stringr::str_detect(nums[1], "^[0-9,]+$")) {
+    nums %>%
+      stringr::str_remove(., ",") %>%
+      as.numeric()
   } else{
     nums
   }
