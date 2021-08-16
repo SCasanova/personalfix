@@ -42,9 +42,9 @@ clean_roster <- function(seasons = 2020) {
 #' @importFrom magrittr "%>%"
 #' @export
 
-name_key <- function(name, arg_1='', arg_2='', draft_year=F) {
+name_key <- function(name, arg_1='', arg_2='', draft_year='') {
   key <- ffscrapr::dp_clean_names(name, lowercase = T)
-  if(draft_year){
+  if(draft_year[1] == ''){
     paste0(
     purrr::map_chr(key, function(x) {
       stringr::str_sub(stringr::str_split(x, ' ')[[1]][1], 1, 3)
@@ -52,7 +52,6 @@ name_key <- function(name, arg_1='', arg_2='', draft_year=F) {
     purrr::map_chr(key, function(x) {
       stringr::str_split(x, ' ')[[1]][2]
     }),
-    stringr::str_sub(draft_year, 3, 4),
     arg_1,
     arg_2
     )
@@ -64,6 +63,7 @@ name_key <- function(name, arg_1='', arg_2='', draft_year=F) {
     purrr::map_chr(key, function(x) {
       stringr::str_split(x, ' ')[[1]][2]
     }),
+    stringr::str_sub(draft_year, 3, 4),
     arg_1,
     arg_2
   )

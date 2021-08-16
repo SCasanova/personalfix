@@ -1,4 +1,6 @@
 # personalfix
+[![Github All Releases](https://img.shields.io/github/downloads/SCasanova/personalfix/total.svg)]()
+
 
 
 A set of functions to easily access Football Outsiders data, merge-ready
@@ -74,7 +76,7 @@ df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 ```
 ### Merge-ready NFL Names
  `name_key()`
-This functions takes arguments name, draft_year, arg_1 and arg_2 
+This functions takes arguments name, arg_1, arg_2 and draft_year
 (easily obtainable from `clean_rosters()`) where arg_* are modular and can be anything the user wants.
 The output is a merge-ready name for situations where IDs are not available. 
 It also uses ffscrapr's mismatched names database to fix name variations. 
@@ -82,10 +84,13 @@ Additional arguments are recommended to be draft round, draft team, or position 
 
 **Examples:**
 ```{r}
-name_key(c('Zeke Elliott', 'Josh Jacobs'), c(2017, 2019), c(1,1), c('RB','RB'))
+name_key(c('Zeke Elliott', 'Josh Jacobs'), c(1,1), c('RB','RB'), c(2017, 2019))
 [1] "ezeelliott171RB" "josjacobs191RB" 
 
-df %>% dplyr::mutate(merge_name = name_key(name, draft_year, draft_round, position))
+name_key(c('Chatarius Atwell', 'Sean Bunting'), c('LAR','TB'))
+[1] "tutatwellLAR"    "seamurphy-buntingTB"
+
+df %>% dplyr::mutate(merge_name = name_key(name, draft_team, position, draft_year))
 ```
 
 
