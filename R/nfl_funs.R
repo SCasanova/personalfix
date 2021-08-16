@@ -35,16 +35,16 @@ clean_roster <- function(seasons = 2020) {
 #'
 #'
 #' @param name vector of NFL names to be converted to merge-ready format
-#' @param draft_year (optional) vector of draft years in YYYY format
 #' @param arg_1 (optional) additional argument to add specificity. (Draft Round recommended fo consistency reasons)
 #' @param arg_2 (optional) additional argument to add specificity. (position recommended fo consistency reasons)
+#' #' @param draft_year (optional) vector of years in YYYY format
 #' @return simplified name (using on ffscrapr mismatches, draft year, and additional arguments)
 #' @importFrom magrittr "%>%"
 #' @export
 
-name_key <- function(name, draft_year='', arg_1='', arg_2='') {
+name_key <- function(name, arg_1='', arg_2='', draft_year=F) {
   key <- ffscrapr::dp_clean_names(name, lowercase = T)
-  if(draft_year == ''){
+  if(draft_year){
     paste0(
     purrr::map_chr(key, function(x) {
       stringr::str_sub(stringr::str_split(x, ' ')[[1]][1], 1, 3)
@@ -52,6 +52,7 @@ name_key <- function(name, draft_year='', arg_1='', arg_2='') {
     purrr::map_chr(key, function(x) {
       stringr::str_split(x, ' ')[[1]][2]
     }),
+    stringr::str_sub(draft_year, 3, 4),
     arg_1,
     arg_2
     )
@@ -63,7 +64,6 @@ name_key <- function(name, draft_year='', arg_1='', arg_2='') {
     purrr::map_chr(key, function(x) {
       stringr::str_split(x, ' ')[[1]][2]
     }),
-    stringr::str_sub(draft_year, 3, 4),
     arg_1,
     arg_2
   )

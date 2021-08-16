@@ -4,16 +4,15 @@
 \alias{name_key}
 \title{Merge Name}
 \usage{
-name_key(name, draft_year = "", arg_1 = "", arg_2 = "")
+name_key(name, arg_1 = "", arg_2 = "", draft_year = F)
 }
 \arguments{
 \item{name}{vector of NFL names to be converted to merge-ready format}
 
-\item{draft_year}{(optional) vector of draft years in YYYY format}
-
 \item{arg_1}{(optional) additional argument to add specificity. (Draft Round recommended fo consistency reasons)}
 
-\item{arg_2}{(optional) additional argument to add specificity. (position recommended fo consistency reasons)}
+\item{arg_2}{(optional) additional argument to add specificity. (position recommended fo consistency reasons)
+#' @param draft_year (optional) vector of years in YYYY format}
 }
 \value{
 simplified name (using on ffscrapr mismatches, draft year, and additional arguments)
