@@ -21,7 +21,7 @@ clean_roster <- function(seasons = 2020) {
                                   T ~ position),
       headshot_url = stringr::str_replace(headshot_url, 'http:', 'https:')
     ) %>% dplyr::left_join(
-      ffscrapr::dp_playerids() %>% dplyr::select(gsis_id, draft_year, draft_round, draft_pick) %>% dplyr::filter(!is.na(gsis_id)),
+      ffscrapr::dp_playerids() %>% dplyr::select(gsis_id, draft_year, draft_round, draft_pick, draft_ovr) %>% dplyr::filter(!is.na(gsis_id)),
       by = 'gsis_id',
       na.matches = 'never'
     ) %>% dplyr::mutate(draft_round = ifelse(is.na(draft_round), 'UDFA', draft_round))
@@ -29,21 +29,34 @@ clean_roster <- function(seasons = 2020) {
 
 #' Merge Name
 #'
-#' This function takes a vector of NFL names and converts them to merge-ready format
+#' This function takes a vector of NFL names and converts them to merge-ready format.
+#' All arguments but name are optional and position/draft_round are modular.
 #'
 #'
 #'
 #' @param name vector of NFL names to be converted to merge-ready format
-#' @param draft_year vector of draft years in YYYY format
-#' @param draft_round vector of single digit or character (1-7 or UDFA) indicating draft round
-#' @param position position in uppercase format (eg. RB, WR)
+#' @param draft_year (optional) vector of draft years in YYYY format
+#' @param draft_round (optional) vector of single digit or character (1-7 or UDFA) indicating draft round
+#' @param position (optional) position in uppercase format (eg. RB, WR)
 #' @return simplified name (using on ffscrapr mismatches, draft year, round and position)
 #' @importFrom magrittr "%>%"
 #' @export
 
-name_key <- function(name, draft_year, draft_round, position) {
+name_key <- function(name, draft_year='', draft_round='', position='') {
   key <- ffscrapr::dp_clean_names(name, lowercase = T)
-  paste0(
+  if(draft_year == ''){
+    paste0(
+    purrr::map_chr(key, function(x) {
+      stringr::str_sub(stringr::str_split(x, ' ')[[1]][1], 1, 3)
+    }),
+    purrr::map_chr(key, function(x) {
+      stringr::str_split(x, ' ')[[1]][2]
+    }),
+    draft_round,
+    position
+    )
+  } else{
+    paste0(
     purrr::map_chr(key, function(x) {
       stringr::str_sub(stringr::str_split(x, ' ')[[1]][1], 1, 3)
     }),
@@ -54,6 +67,8 @@ name_key <- function(name, draft_year, draft_round, position) {
     draft_round,
     position
   )
+  }
+
 }
 
 
@@ -147,3 +162,5 @@ fix_num <- function(nums) {
     nums
   }
 }
+
+
