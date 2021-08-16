@@ -1,5 +1,5 @@
 # personalfix
-[![Github All Releases](https://img.shields.io/github/downloads/SCasanova/personalfix/total.svg)]()
+[![Github All Releases](https://img.shields.io/github/downloads/SCasanova/personalfix/total)]()
 
 
 
