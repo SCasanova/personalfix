@@ -30,19 +30,19 @@ clean_roster <- function(seasons = 2020) {
 #' Merge Name
 #'
 #' This function takes a vector of NFL names and converts them to merge-ready format.
-#' All arguments but name are optional and position/draft_round are modular.
+#' All arguments but name are optional and draft_year is optional but data entered must be in year format.
 #'
 #'
 #'
 #' @param name vector of NFL names to be converted to merge-ready format
 #' @param draft_year (optional) vector of draft years in YYYY format
-#' @param draft_round (optional) vector of single digit or character (1-7 or UDFA) indicating draft round
-#' @param position (optional) position in uppercase format (eg. RB, WR)
-#' @return simplified name (using on ffscrapr mismatches, draft year, round and position)
+#' @param arg_1 (optional) additional argument to add specificity. (Draft Round recommended fo consistency reasons)
+#' @param arg_2 (optional) additional argument to add specificity. (position recommended fo consistency reasons)
+#' @return simplified name (using on ffscrapr mismatches, draft year, and additional arguments)
 #' @importFrom magrittr "%>%"
 #' @export
 
-name_key <- function(name, draft_year='', draft_round='', position='') {
+name_key <- function(name, draft_year='', arg_1='', arg_2='') {
   key <- ffscrapr::dp_clean_names(name, lowercase = T)
   if(draft_year == ''){
     paste0(

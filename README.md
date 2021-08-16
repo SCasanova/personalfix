@@ -74,12 +74,11 @@ df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 ```
 ### Merge-ready NFL Names
  `name_key()`
-This functions takes arguments name, draft_year, draft_round and position 
-(easily obtainable from `clean_rosters()`) and outputs a merge-ready name for 
-situations where IDs are not available. It also uses ffscrapr's mismatched names
-database to fix name variations. 
-
-Alternatively other variables could be used in place of draft_round and position
+This functions takes arguments name, draft_year, arg_1 and arg_2 
+(easily obtainable from `clean_rosters()`) where arg_* are modular and can be anything the user wants.
+The output is a merge-ready name for situations where IDs are not available. 
+It also uses ffscrapr's mismatched names database to fix name variations. 
+Additional arguments are recommended to be draft round, draft team, or position to avoid inconsistencies across sources.
 
 **Examples:**
 ```{r}
