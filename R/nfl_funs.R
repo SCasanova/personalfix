@@ -52,8 +52,8 @@ name_key <- function(name, draft_year='', arg_1='', arg_2='') {
     purrr::map_chr(key, function(x) {
       stringr::str_split(x, ' ')[[1]][2]
     }),
-    draft_round,
-    position
+    arg_1,
+    arg_2
     )
   } else{
     paste0(
@@ -64,8 +64,8 @@ name_key <- function(name, draft_year='', arg_1='', arg_2='') {
       stringr::str_split(x, ' ')[[1]][2]
     }),
     stringr::str_sub(draft_year, 3, 4),
-    draft_round,
-    position
+    arg_1,
+    arg_2
   )
   }
 
