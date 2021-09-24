@@ -93,7 +93,7 @@ df %>% dplyr::mutate(merge_name = name_key(name, draft_team, position, draft_yea
 ### Modified Rosters
 `clean_rosters()`
 This function is a wrapper for `nflreadr::load_rosters()` and outputs all
-headshot urls with https: prefix and integrates FB, HB and RB into RB.
+headshot urls (including 2021 rookies) with https: prefix and integrates FB, HB and RB, into RB.
 Also includes draft data from `ffscrapr::dp_playerids()`
 
 
