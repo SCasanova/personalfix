@@ -4,7 +4,7 @@
 \alias{name_key}
 \title{Merge Name}
 \usage{
-name_key(name, arg_1 = "", arg_2 = "", draft_year = F)
+name_key(name, arg_1 = "", arg_2 = "", draft_year = "")
 }
 \arguments{
 \item{name}{vector of NFL names to be converted to merge-ready format}

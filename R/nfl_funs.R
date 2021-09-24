@@ -21,10 +21,13 @@ clean_roster <- function(seasons = 2020) {
                                   T ~ position),
       headshot_url = stringr::str_replace(headshot_url, 'http:', 'https:')
     ) %>% dplyr::left_join(
-      ffscrapr::dp_playerids() %>% dplyr::select(gsis_id, draft_year, draft_round, draft_pick, draft_ovr) %>% dplyr::filter(!is.na(gsis_id)),
+      ffscrapr::dp_playerids() %>% dplyr::select(gsis_id, espn_id, draft_year, draft_round, draft_pick, draft_ovr) %>% dplyr::filter(!is.na(gsis_id)),
       by = 'gsis_id',
       na.matches = 'never'
-    ) %>% dplyr::mutate(draft_round = ifelse(is.na(draft_round), 'UDFA', draft_round))
+    ) %>%
+   dplyr::mutate(espn_id =  dplyr::coalesce(as.character(espn_id.x), as.character(espn_id.y)),
+                 draft_round = ifelse(is.na(draft_round), 'UDFA', draft_round),
+                 headshot_url = paste0('https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/', espn_id, '.png'))
 }
 
 #' Merge Name
