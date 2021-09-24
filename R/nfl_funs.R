@@ -27,7 +27,7 @@ clean_roster <- function(seasons = 2020) {
     ) %>%
    dplyr::mutate(espn_id =  dplyr::coalesce(as.character(espn_id.x), as.character(espn_id.y)),
                  draft_round = ifelse(is.na(draft_round), 'UDFA', draft_round),
-                 headshot_url = paste0('https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/', espn_id, '.png'))
+                 headshot_url = ifelse(is.na(headshot_url), paste0('https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/', espn_id, '.png'), headshot_url))
 }
 
 #' Merge Name

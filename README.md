@@ -1,6 +1,3 @@
-# personalfix
-[![Github All Releases](https://img.shields.io/github/downloads/SCasanova/personalfix/total)]()
-
 
 
 A set of functions to easily access Football Outsiders data, merge-ready
