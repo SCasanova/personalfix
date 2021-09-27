@@ -70,6 +70,26 @@ fix_num("2,543")
 
 df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 ```
+
+### Scale/Standardize variables
+`standardize()`
+This function will take a vector and standardize it with a mean of 0 and a 
+standard deviation of 1
+
+**Examples:**
+```{r}
+standardize(c(12,342,54,22,2,453))
+[1] -0.6858083  0.9844260 -0.4732330 -0.6351952 -0.7364215
+[6]  1.5462320
+
+mean(standardize(c(12,342,54,22,2,453)))
+[1] 9.233789e-18
+
+sd(standardize(c(12,342,54,22,2,453)))
+
+df %>% dplyr::mutate(dplyr::across(col1:col24, standardize))
+```
+
 ### Merge-ready NFL Names
  `name_key()`
 This functions takes arguments name, arg_1, arg_2 and draft_year
