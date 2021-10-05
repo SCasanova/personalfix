@@ -86,6 +86,7 @@ mean(standardize(c(12,342,54,22,2,453)))
 [1] 9.233789e-18
 
 sd(standardize(c(12,342,54,22,2,453)))
+[1] 1
 
 df %>% dplyr::mutate(dplyr::across(col1:col24, standardize))
 ```
