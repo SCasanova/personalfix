@@ -74,7 +74,7 @@ df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 ### Scale/Standardize variables
 `standardize()`
 This function will take a vector and standardize it with a mean of 0 and a 
-standard deviation of 1
+standard deviation of 1. Wrapper for scales with a nicer output.
 
 **Examples:**
 ```{r}
@@ -90,6 +90,7 @@ sd(standardize(c(12,342,54,22,2,453)))
 
 df %>% dplyr::mutate(dplyr::across(col1:col24, standardize))
 ```
+
 
 ### Merge-ready NFL Names
  `name_key()`

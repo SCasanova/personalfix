@@ -42,9 +42,9 @@ fix_num <- function(nums) {
 #' @export
 
 standardize <- function(var){
-  mean <- mean(var, na.rm = T)
-  sd <- sd(var, na.rm = T)
-  purrr::map_dbl(var, function(x){(x-mean)/sd})
+  as.numeric(scale(var))
 }
+
+
 
 
