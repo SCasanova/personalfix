@@ -74,7 +74,7 @@ df %>% dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
 ### Scale/Standardize variables
 `standardize()`
 This function will take a vector and standardize it with a mean of 0 and a 
-standard deviation of 1. Wrapper for scales with a nicer output.
+standard deviation of 1. Wrapper for `scales()` with a nicer output.
 
 **Examples:**
 ```{r}
