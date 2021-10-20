@@ -108,7 +108,7 @@ foutsiders_data <-
              season)
 
     pgsession <- rvest::session(login)
-    pgform <- rvest::html_form(pgsession)[[3]]
+    pgform <- rvest::html_form(pgsession)[[2]]
     filled_form <-
       rvest::html_form_set(pgform, name = user, pass = pass)
     rvest::session_submit(pgsession, filled_form)
