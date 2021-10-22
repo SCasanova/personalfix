@@ -45,6 +45,27 @@ standardize <- function(var){
   as.numeric(scale(var))
 }
 
+#' Custom ggplot theme
+#'
+#' Applies a custom theme to ggplot object
+#'
+#'
+#' @param size font size value (default = 13)
+#' @return ggplot2t heme
+#' @importFrom magrittr "%>%"
+#' @export
+
+theme_cas <- function(size = 13){
+  ggplot2::theme(
+    title =   ggplot2::element_text(family = 'mono'),
+    plot.title =   ggplot2::element_text(size = 18, face = 'bold'),
+    plot.subtitle =   ggplot2::element_text(size = size),
+    panel.grid.minor =   ggplot2::element_blank(),
+    panel.grid.major =   ggplot2::element_line(color = '#c7bfbd', linetype = 3)
+  )
+}
+
+
 
 
 
