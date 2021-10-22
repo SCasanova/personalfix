@@ -56,7 +56,8 @@ standardize <- function(var){
 #' @export
 
 theme_cas <- function(size = 13){
-  ggplot2::theme(
+  ggplot2::theme_minimal()+
+    ggplot2::theme(
     title =   ggplot2::element_text(family = 'mono'),
     plot.title =   ggplot2::element_text(size = 18, face = 'bold'),
     plot.subtitle =   ggplot2::element_text(size = size),
