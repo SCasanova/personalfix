@@ -62,7 +62,9 @@ theme_cas <- function(size = 13){
     plot.title =   ggplot2::element_text(size = 18, face = 'bold'),
     plot.subtitle =   ggplot2::element_text(size = size),
     panel.grid.minor =   ggplot2::element_blank(),
-    panel.grid.major =   ggplot2::element_line(color = '#c7bfbd', linetype = 3)
+    panel.grid.major =   ggplot2::element_line(color = '#c7bfbd', linetype = 3),
+    plot.background = element_rect(fill = '#f8f2e4', color = "#f8f2e4")
+
   )
 }
 
