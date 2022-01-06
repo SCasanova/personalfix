@@ -4,7 +4,7 @@
 \alias{clean_roster}
 \title{Clean Rosters}
 \usage{
-clean_roster(seasons = 2020)
+clean_roster(seasons = 2021)
 }
 \arguments{
 \item{seasons}{Range of years to pull from nflreadr rosters. Defaults to 2020}

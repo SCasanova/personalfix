@@ -13,7 +13,7 @@
 
 
 
-clean_roster <- function(seasons = 2020) {
+clean_roster <- function(seasons = 2021) {
   nflreadr::load_rosters(seasons) %>%
     dplyr::mutate(
       position = dplyr::case_when(position == 'FB' |
@@ -27,7 +27,8 @@ clean_roster <- function(seasons = 2020) {
     ) %>%
    dplyr::mutate(espn_id =  dplyr::coalesce(as.character(espn_id.x), as.character(espn_id.y)),
                  draft_round = ifelse(is.na(draft_round), 'UDFA', draft_round),
-                 headshot_url = ifelse(is.na(headshot_url), paste0('https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/', espn_id, '.png'), headshot_url))
+                 headshot_url = ifelse(is.na(headshot_url), paste0('https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/', espn_id, '.png'), headshot_url)) %>%
+    select(-c(espn_id.x,espn_id.y))
 }
 
 #' Merge Name
