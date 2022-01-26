@@ -15,7 +15,7 @@
 
 
 fix_num <- function(nums) {
-  if (stringr::str_detect(nums[1], "%$")) {
+  if (stringr::str_detect(nums[1], "%")) {
     nums <- nums %>%
       stringr::str_remove(., "%") %>%
       as.numeric()
@@ -23,6 +23,7 @@ fix_num <- function(nums) {
   } else if (stringr::str_detect(nums[1], "[0-9]\\.?,?[0-9]*$")) {
     nums %>%
       stringr::str_remove(., ",") %>%
+      stringr::str_remove(., "\\$") %>%
       as.numeric()
   } else{
     nums
