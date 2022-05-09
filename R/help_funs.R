@@ -52,7 +52,7 @@ standardize <- function(var){
 #'
 #'
 #' @param size font size value (default = 13)
-#' @return ggplot2t heme
+#' @return ggplot2 theme
 #' @importFrom magrittr "%>%"
 #' @export
 
@@ -69,6 +69,21 @@ theme_cas <- function(size = 13){
   )
 }
 
+
+#' Time Check
+#'
+#' Wrapper to check the time it takes to run a code snippet
+#'
+#'
+#' @param expr expression to evaluate
+#' @return time to run
+#' @export
+
+time_check <- function(expr){
+  start <- Sys.time()
+  expr
+  Sys.time()-start
+}
 
 
 
