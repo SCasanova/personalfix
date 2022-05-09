@@ -10,7 +10,7 @@ theme_cas(size = 13)
 \item{size}{font size value (default = 13)}
 }
 \value{
-ggplot2t heme
+ggplot2 theme
 }
 \description{
 Applies a custom theme to ggplot object
