@@ -90,7 +90,7 @@ name_key <- function(name, arg_1='', arg_2='', draft_year='') {
 #' @param season season to scrape
 #' @param user Football Outsiders authorized username
 #' @param pass Football Outsiders authorized password
-#' @param talben table number to return (usefull for pace page)
+#' @param tablen table number to return (usefull for pace page)
 #' @param strip disable removing % (for pace and drive pages)
 #' @return table with requested data
 #' @importFrom magrittr "%>%"
@@ -101,7 +101,7 @@ foutsiders_data <-
            season = 2021,
            user = '',
            pass = '',
-           talben = 1,
+           tablen = 1,
            strip = 1) {
     if (user == '' | pass == '') {
       warning('No user or pass detected, data may be incomplate')
