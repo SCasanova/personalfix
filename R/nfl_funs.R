@@ -80,59 +80,56 @@ name_key <- function(name, arg_1='', arg_2='', draft_year='') {
 #'
 #' This function takes a football ousiders page name, season as well as
 #' credentials and outputs said table. Page name should be in the format
-#' "team-offense", "basic-offensive-line", etc.
+#' "team-offense","team-defense","special-teams","qb","wr","rb","te",
+#' "basic-offensive-line","basic-defensive-line","pace-stats",
+#' "overall-drive-stats", etc.
 #'
 #'
 #'
 #' @param page page to scrape
-#' @param season season to scrapte
+#' @param season season to scrape
 #' @param user Football Outsiders authorized username
 #' @param pass Football Outsiders authorized password
+#' @param talben table number to return (usefull for pace page)
+#' @param strip disable removing % (for pace and drive pages)
 #' @return table with requested data
 #' @importFrom magrittr "%>%"
 #' @export
 
 foutsiders_data <-
   function(page = 'team-offense',
-           season = 2020,
+           season = 2021,
            user = '',
-           pass = '') {
-    if (user == '' |
-        pass == '') {
+           pass = '',
+           talben = 1,
+           strip = 1) {
+    if (user == '' | pass == '') {
       warning('No user or pass detected, data may be incomplate')
     }
 
-    login <-
-      paste0('https://www.footballoutsiders.com/stats/nfl/',
-             page,
-             '/',
-             season)
+    login <- paste0('https://www.footballoutsiders.com/stats/nfl/',page,'/',season)
 
     pgsession <- rvest::session(login)
     pgform <- rvest::html_form(pgsession)[[2]]
-    filled_form <-
-      rvest::html_form_set(pgform, name = user, pass = pass)
+    filled_form <- rvest::html_form_set(pgform, name = user, pass = pass)
     rvest::session_submit(pgsession, filled_form)
 
-    page_read <-
-      rvest::session_jump_to(pgsession,
-                             login)
-    table <- (page_read %>% rvest::html_table(fill = T))[[1]]
-    if (is.na(table[6, 2]) |
-        table[6, 2] == '') {
+    page_read <- rvest::session_jump_to(pgsession,login)
+    table <- (page_read %>% rvest::html_table(fill = T))[[tablen]]
+    if (is.na(table[6, 2]) | table[6, 2] == '') {
       warning('Login failed, check your credentials. Data may be incomplate')
     }
     if (stringr::str_detect(page, 'line')) {
       colnames(table) <- table[1, ]
       table <- table[-1, ]
     }
-
-    options(warn = -1)
-    table <- table %>%
-      dplyr::select(which(sapply(., is.character))) %>%
-      dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
-    options(warn = 1)
-
+    if(strip==1){
+      options(warn = -1)
+      table <- table %>%
+        dplyr::select(which(sapply(., is.character))) %>%
+        dplyr::mutate(dplyr::across(dplyr::everything(), fix_num))
+      options(warn = 1)
+    }
     table
 
   }
